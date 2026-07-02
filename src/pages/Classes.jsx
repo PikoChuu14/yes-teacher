@@ -1,4 +1,10 @@
-function Classes() {
+import { Link } from "react-router-dom";
+
+function ClassesPage({ classes, sessions }) {
+  const pendingSessions = sessions.filter(
+    (session) => session.status === "not_submitted"
+  );
+
   return (
     <main className="page">
       <section className="content-card">
@@ -7,7 +13,7 @@ function Classes() {
             <p className="eyebrow">Class Management</p>
             <h2>Classes</h2>
             <p className="page-description">
-              View and manage class sessions for the tuition centre.
+              Select a scheduled class session to mark attendance.
             </p>
           </div>
 
@@ -17,68 +23,71 @@ function Classes() {
         <div className="summary-grid">
           <div className="summary-card">
             <p>Total Classes</p>
-            <h3>3</h3>
+            <h3>{classes.length}</h3>
           </div>
 
           <div className="summary-card">
-            <p>Today Sessions</p>
-            <h3>2</h3>
+            <p>Total Sessions</p>
+            <h3>{sessions.length}</h3>
           </div>
 
           <div className="summary-card">
             <p>Pending Attendance</p>
-            <h3>2</h3>
+            <h3>{pendingSessions.length}</h3>
           </div>
         </div>
 
-        <div className="table-card">
-          <table>
-            <thead>
-              <tr>
-                <th>Class Name</th>
-                <th>Subject</th>
-                <th>Teacher</th>
-                <th>Schedule</th>
-                <th>Status</th>
-              </tr>
-            </thead>
+        <div className="section-title-row">
+          <h3>Scheduled Sessions</h3>
+          <p>Open a session to mark attendance.</p>
+        </div>
 
-            <tbody>
-              <tr>
-                <td>Form 3 Mathematics</td>
-                <td>Mathematics</td>
-                <td>Teacher A</td>
-                <td>Mon, 8:00 PM</td>
-                <td>
-                  <span className="status-pill active">Active</span>
-                </td>
-              </tr>
+        <div className="session-grid">
+          {sessions.map((session) => {
+            const classInfo = classes.find((item) => item.id === session.classId);
 
-              <tr>
-                <td>Year 6 English</td>
-                <td>English</td>
-                <td>Teacher B</td>
-                <td>Wed, 5:00 PM</td>
-                <td>
-                  <span className="status-pill active">Active</span>
-                </td>
-              </tr>
+            return (
+              <article className="session-card" key={session.id}>
+                <div>
+                  <h3>{classInfo?.name}</h3>
 
-              <tr>
-                <td>Form 4 Science</td>
-                <td>Science</td>
-                <td>Teacher C</td>
-                <td>Fri, 7:30 PM</td>
-                <td>
-                  <span className="status-pill active">Active</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  <p>
+                    {session.sessionDate} • {session.startTime} -{" "}
+                    {session.endTime}
+                  </p>
+
+                  <p>
+                    {session.room} • {classInfo?.teacher}
+                  </p>
+                </div>
+
+                <div className="session-card-actions">
+                  <span
+                    className={
+                      session.status === "submitted"
+                        ? "status-pill submitted"
+                        : "status-pill pending"
+                    }
+                  >
+                    {session.status === "submitted"
+                      ? "Submitted"
+                      : "Not Submitted"}
+                  </span>
+
+                  <Link
+                    className="secondary-button"
+                    to={`/attendance/${session.id}`}
+                  >
+                    Open Attendance
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
     </main>
   );
 }
 
-export default Classes;
+export default ClassesPage;
