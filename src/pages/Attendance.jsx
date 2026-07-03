@@ -93,7 +93,6 @@ function AttendancePage({
                     <td>
                       <div className="attendance-actions">
                         <button
-                          disabled={session.status === "submitted"}
                           className={
                             currentStatus === "attend"
                               ? "attendance-button selected"
@@ -107,7 +106,6 @@ function AttendancePage({
                         </button>
 
                         <button
-                          disabled={session.status === "submitted"}
                           className={
                             currentStatus === "late"
                               ? "attendance-button selected"
@@ -121,7 +119,6 @@ function AttendancePage({
                         </button>
 
                         <button
-                          disabled={session.status === "submitted"}
                           className={
                             currentStatus === "absent"
                               ? "attendance-button selected absent"
@@ -145,11 +142,10 @@ function AttendancePage({
         <div className="submit-row">
           <button
             className="primary-button"
-            disabled={session.status === "submitted"}
             onClick={() => onSubmitAttendance(session.id)}
           >
             {session.status === "submitted"
-              ? "Attendance Submitted"
+              ? "Update Attendance"
               : "Submit Attendance"}
           </button>
         </div>

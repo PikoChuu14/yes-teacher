@@ -34,7 +34,7 @@ function App() {
   const handleMarkAttendance = (sessionId, studentId, status) => {
     const session = sessions.find((item) => item.id === sessionId);
 
-    if (!session || session.status === "submitted") {
+    if (!session) {
       return;
     }
 
@@ -72,7 +72,12 @@ function App() {
       )
     );
 
-    alert("Attendance submitted successfully.");
+    if (session.status === "submitted") {
+      alert("Attendance updated successfully.");
+    } 
+    else {
+        alert("Attendance submitted successfully.");
+    }
   };
 
   return (
